@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ddd.yzf.dao.PermissionDAO">
+
+    <insert id="addPermission" parameterType="org.ddd.yzf.entity.Permission"
+            useGeneratedKeys="true" keyProperty="uid">
+        <selectKey keyProperty="uid" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO permission(code, name, remark) VALUES (#{code}, #{name}, #{remark})
+    </insert>
+
+    <!--批量保存-->
+    <insert id="addPermissionLineList">
+        insert into permission_line
+        ( api_url, permission_id )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            ( #{item.apiURL}, #{item.permissionId} )
+        </foreach>
+    </insert>
+
+    <select id="findPermissionsByRoleId"
+            parameterType="java.lang.Long"
+            resultType="java.lang.String">
+        SELECT pl.api_URL
+        FROM permission_line pl
+        WHERE pl.permission_id IN
+              (SELECT p.uid
+               FROM permission p
+                        INNER JOIN role_permission rp on p.uid = rp.uid
+               WHERE rp.role_id = #{roleId})
+    </select>
+
+    <select id="getPermissionForPage" resultType="org.ddd.yzf.entity.Permission">
+        SELECT uid, code, name, remark
+        FROM permission
+        WHERE ${filterSql}
+        ORDER BY ${sortSql}
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <select id="findPermissionById" parameterType="java.lang.Long"
+            resultType="org.ddd.yzf.entity.Permission">
+        SELECT uid, code, name, remark
+        FROM permission
+        WHERE uid = #{uid}
+    </select>
+
+    <select id="getTotalCountForPage" resultType="java.lang.Long">
+        SELECT count(uid)
+        FROM permission
+        WHERE ${filterSql}
+    </select>
+
+    <select id="findLinesByPermissionId" parameterType="java.lang.Long"
+            resultType="org.ddd.yzf.entity.PermissionLine">
+        SELECT uid, api_url, permission_id
+        FROM permission_line
+        WHERE permission_id = #{permissionId}
+    </select>
+
+</mapper>

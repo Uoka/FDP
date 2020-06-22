@@ -1,0 +1,63 @@
+plugins {
+    id 'org.springframework.boot' version '2.0.4.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.7.RELEASE'
+}
+
+apply plugin: 'java'
+
+group = 'org.ddd'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+//    mavenCentral()
+    // 修改仓库地址为国内仓库
+    maven {
+        url 'http://maven.aliyun.com/nexus/content/groups/public/'
+    }
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter', version: '2.0.4.RELEASE'
+
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.0.4.RELEASE'
+
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.2.2.RELEASE'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test' // spring boot 依赖
+
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.0' // mybatis 依赖
+
+    compile("mysql:mysql-connector-java:5.1.30") // mysql 依赖
+    
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: '2.1.8.RELEASE'
+	
+   	// https://mvnrepository.com/artifact/org.apache.directory.studio/org.apache.commons.lang
+	compile group: 'org.apache.directory.studio', name: 'org.apache.commons.lang', version: '2.6'
+	
+    // https://mvnrepository.com/artifact/com.alibaba/fastjson
+    compile group: 'com.alibaba', name: 'fastjson', version: '1.2.58'
+    
+     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.1'
+
+    // 短信依赖
+    // https://mvnrepository.com/artifact/com.aliyun/aliyun-java-sdk-core
+    compile group: 'com.aliyun', name: 'aliyun-java-sdk-core', version: '4.4.1'
+    // https://mvnrepository.com/artifact/com.aliyun/aliyun-java-sdk-dysmsapi
+    compile group: 'com.aliyun', name: 'aliyun-java-sdk-dysmsapi', version: '1.1.0'
+
+    // 图表生成依赖
+    compile files('src/main/libs/jcommon-1.0.2.jar')
+    compile files('src/main/libs/jfreechart-1.0.17.jar')
+
+    // 验证码
+    // https://mvnrepository.com/artifact/com.github.penggle/kaptcha
+    compile group: 'com.github.penggle', name: 'kaptcha', version: '2.3.2'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+}

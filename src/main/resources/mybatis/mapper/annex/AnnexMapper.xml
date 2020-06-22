@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ddd.yzf.dao.AnnexDAO">
+
+    <insert id="addAnnex" parameterType="org.ddd.yzf.entity.Annex">
+        <selectKey keyProperty="uid" order="AFTER" resultType="java.lang.Long">
+            select LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO annex
+        (`uploader_id`,
+        `upload_time`,
+        `saved_name`,
+        `table_name`,
+        `field_id`,
+        `relative_path`,
+        `suffix_name`,
+        `former_name`,
+        `size`,
+        `remark`)
+        VALUES (
+        #{uploaderId},
+        #{uploadTime},
+        #{savedName},
+        #{tableName},
+        #{fieldId},
+        #{relativePath},
+        #{suffixName},
+        #{formerName},
+        #{size},
+        #{remark})
+    </insert>
+
+    <delete id="delAnnexById" parameterType="java.lang.Long">
+        DELETE
+        FROM annex
+        WHERE `uid` = #{uid}
+    </delete>
+
+    <delete id="delAnnexByKey">
+        DELETE
+        FROM annex
+        WHERE `field_id` = #{fieldId}
+          AND `table_name` = #{tableName}
+    </delete>
+
+    <update id="updateAnnex" parameterType="org.ddd.yzf.entity.Annex">
+        UPDATE annex
+        SET `uploader_id`   = #{uploaderId},
+            `upload_time`    = #{uploadTime},
+            `saved_name`    = #{savedName},
+            `table_name`    = #{tableName},
+            `field_id`      = #{fieldId},
+            `relative_path` = #{relativePath},
+            `suffix_name`   = #{suffixName},
+            `former_name`   = #{formerName},
+            `size`          = #{size},
+            `remark`        = #{remark}
+        WHERE `uid` = #{uid}
+    </update>
+
+    <select id="getAnnexById" parameterType="java.lang.Long" resultType="org.ddd.yzf.entity.Annex">
+        SELECT `uid`,
+               `uploader_id`,
+               `upload_time`,
+               `saved_name`,
+               `field_id`,
+               `table_name`,
+               `relative_path`,
+               `suffix_name`,
+               `former_name`,
+               `size`,
+               `remark`
+        FROM annex
+        WHERE `uid` = #{uid}
+    </select>
+
+    <select id="getAnnexByKey" resultType="org.ddd.yzf.entity.Annex">
+        SELECT `uid`,
+               `uploader_id`,
+               `upload_time`,
+               `saved_name`,
+               `field_id`,
+               `table_name`,
+               `relative_path`,
+               `suffix_name`,
+               `former_name`,
+               `size`,
+               `remark`
+        FROM annex
+        WHERE `field_id` = #{fieldId}
+          AND `table_name` = #{tableName}
+    </select>
+
+</mapper>
